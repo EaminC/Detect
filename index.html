@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Food & Weight Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        padding: 40px 20px;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 50px;
+        font-size: 2.5em;
+        font-weight: 300;
+        letter-spacing: 2px;
+      }
+
+      .charts-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 30px;
+        margin-bottom: 50px;
+      }
+
+      .chart-container {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .chart-title {
+        font-size: 1.3em;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .day-entry {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .day-entry:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      .date-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e8e8e8;
+      }
+
+      .date {
+        font-size: 1.8em;
+        font-weight: 400;
+        color: #2c3e50;
+      }
+
+      .weight {
+        font-size: 1.3em;
+        color: #3498db;
+        font-weight: 500;
+      }
+
+      .images-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .image-wrapper {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        height: 300px;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .image-wrapper img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        transition: transform 0.3s ease;
+        transform-origin: center center;
+      }
+
+      .image-wrapper:hover img {
+        transform: scale(1.05);
+      }
+
+      .image-wrapper:hover img[data-rotate] {
+        transform: scale(1.05);
+      }
+
+      .meal-item {
+        padding: 15px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .meal-item:last-child {
+        border-bottom: none;
+      }
+
+      .meal-name {
+        font-size: 1.1em;
+        font-weight: 500;
+        color: #2c3e50;
+        margin-bottom: 8px;
+      }
+
+      .meal-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        font-size: 0.95em;
+        color: #666;
+      }
+
+      .meal-detail-item {
+        display: flex;
+        align-items: center;
+      }
+
+      .meal-detail-label {
+        font-weight: 500;
+        margin-right: 5px;
+      }
+
+      .total-summary {
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 2px solid #3498db;
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+      }
+
+      .total-title {
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 12px;
+      }
+
+      .total-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .stat-item {
+        display: flex;
+        align-items: center;
+      }
+
+      .stat-label {
+        font-weight: 500;
+        color: #666;
+        margin-right: 8px;
+      }
+
+      .stat-value {
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .kcal {
+        color: #e74c3c;
+      }
+
+      .protein {
+        color: #3498db;
+      }
+
+      .fat {
+        color: #f39c12;
+      }
+
+      .carbs {
+        color: #27ae60;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 50px;
+        color: #666;
+        font-size: 1.2em;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2em;
+        }
+
+        .charts-section {
+          grid-template-columns: 1fr;
+        }
+
+        .date-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+
+        .meal-details {
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .images-section {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Daily Food & Weight Tracker</h1>
+
+      <div id="loading" class="loading">Loading data...</div>
+
+      <!-- Charts Section -->
+      <div class="charts-section" id="chartsSection" style="display: none">
+        <div class="chart-container">
+          <div class="chart-title">Daily Calorie Intake</div>
+          <canvas id="calorieChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+          <div class="chart-title">Weight Trend</div>
+          <canvas id="weightChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+          <div class="chart-title">Macronutrient Distribution</div>
+          <canvas id="macroChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+          <div class="chart-title">Daily Macronutrient Comparison</div>
+          <canvas id="macroComparisonChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Day entries will be inserted here -->
+      <div id="dayEntries"></div>
+    </div>
+
+    <script>
+      let data = null;
+      const imageFolder = "pic/";
+
+      // Load data from JSON file
+      async function loadData() {
+        try {
+          const response = await fetch("data.json");
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          data = await response.json();
+          renderPage();
+          return Promise.resolve();
+        } catch (error) {
+          console.error("Error loading data:", error);
+          const loadingEl = document.getElementById("loading");
+          loadingEl.innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+              <h2 style="color: #e74c3c; margin-bottom: 15px;">Error loading data</h2>
+              <p style="margin-bottom: 10px;">This page needs to be served from a local web server.</p>
+              <p style="margin-bottom: 20px; color: #666;">Please run one of these commands in the terminal:</p>
+              <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; font-family: monospace; text-align: left; max-width: 600px; margin: 0 auto;">
+                <p style="margin: 5px 0;"><strong>Python 3:</strong></p>
+                <p style="margin: 5px 0; color: #27ae60;">cd /Users/eamin/Desktop/detect && python3 -m http.server 8000</p>
+                <p style="margin: 15px 0 5px 0;"><strong>Then open:</strong></p>
+                <p style="margin: 5px 0; color: #3498db;">http://localhost:8000/show.html</p>
+              </div>
+              <p style="margin-top: 20px; color: #666; font-size: 0.9em;">Error details: ${error.message}</p>
+            </div>
+          `;
+          return Promise.reject(error);
+        }
+      }
+
+      // Render the entire page
+      function renderPage() {
+        const loadingEl = document.getElementById("loading");
+        const dayEntriesEl = document.getElementById("dayEntries");
+        const chartsSection = document.getElementById("chartsSection");
+
+        if (!data || !data.days) {
+          loadingEl.textContent = "No data available.";
+          return;
+        }
+
+        loadingEl.style.display = "none";
+        chartsSection.style.display = "grid";
+
+        // Render day entries
+        dayEntriesEl.innerHTML = data.days
+          .map((day) => createDayEntry(day))
+          .join("");
+
+        // Initialize charts
+        initializeCharts();
+      }
+
+      // Create HTML for a day entry
+      function createDayEntry(day) {
+        const imagesHtml = day.images
+          .map((img) => {
+            const rotateDeg = img.rotate || 0;
+            const rotateStyle =
+              rotateDeg !== 0
+                ? `transform: rotate(${rotateDeg}deg); transform-origin: center center;`
+                : "";
+            const dataRotate =
+              rotateDeg !== 0 ? `data-rotate="${rotateDeg}"` : "";
+            return `
+          <div class="image-wrapper">
+            <img 
+              src="${imageFolder}${img.filename}" 
+              alt="${day.date} - Image ${day.images.indexOf(img) + 1}"
+              style="${rotateStyle}"
+              ${dataRotate}
+              onerror="this.style.display='none'"
+            />
+          </div>
+        `;
+          })
+          .join("");
+
+        const mealsHtml = day.meals
+          .map(
+            (meal) => `
+          <div class="meal-item">
+            <div class="meal-name">${meal.name}</div>
+            <div class="meal-details">
+              <span class="meal-detail-item">
+                <span class="meal-detail-label">Weight:</span> ${meal.weight}
+              </span>
+              <span class="meal-detail-item">
+                <span class="meal-detail-label">Calories:</span> ${meal.calories} kcal
+              </span>
+              <span class="meal-detail-item">
+                <span class="meal-detail-label">Protein:</span> ${meal.protein} g
+              </span>
+              <span class="meal-detail-item">
+                <span class="meal-detail-label">Fat:</span> ${meal.fat} g
+              </span>
+              <span class="meal-detail-item">
+                <span class="meal-detail-label">Carbs:</span> ${meal.carbs} g
+              </span>
+            </div>
+          </div>
+        `
+          )
+          .join("");
+
+        return `
+        <div 
+          class="day-entry" 
+          data-date="${day.date}" 
+          data-weight="${day.weight}" 
+          data-kcal="${day.totals.calories}" 
+          data-protein="${day.totals.protein}" 
+          data-fat="${day.totals.fat}" 
+          data-carbs="${day.totals.carbs}"
+        >
+          <div class="date-header">
+            <div class="date">${day.displayDate}</div>
+            <div class="weight">Weight: ${day.weight} kg</div>
+          </div>
+          ${
+            day.images && day.images.length > 0
+              ? `<div class="images-section">${imagesHtml}</div>`
+              : ""
+          }
+          ${mealsHtml}
+          <div class="total-summary">
+            <div class="total-title">Daily Total</div>
+            <div class="total-stats">
+              <span class="stat-item">
+                <span class="stat-label">Total Calories:</span>
+                <span class="stat-value kcal">${day.totals.calories.toLocaleString()} kcal</span>
+              </span>
+              <span class="stat-item">
+                <span class="stat-label">Protein:</span>
+                <span class="stat-value protein">${day.totals.protein} g</span>
+              </span>
+              <span class="stat-item">
+                <span class="stat-label">Fat:</span>
+                <span class="stat-value fat">${day.totals.fat} g</span>
+              </span>
+              <span class="stat-item">
+                <span class="stat-label">Carbs:</span>
+                <span class="stat-value carbs">${day.totals.carbs} g</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      `;
+      }
+
+      // Initialize charts
+      function initializeCharts() {
+        if (!data || !data.days) return;
+
+        const dates = data.days.map((d) => d.date);
+        const weights = data.days.map((d) => d.weight);
+        const calories = data.days.map((d) => d.totals.calories);
+        const proteins = data.days.map((d) => d.totals.protein);
+        const fats = data.days.map((d) => d.totals.fat);
+        const carbs = data.days.map((d) => d.totals.carbs);
+
+        // Chart 1: Daily Calorie Intake
+        const calorieCtx = document
+          .getElementById("calorieChart")
+          .getContext("2d");
+        new Chart(calorieCtx, {
+          type: "line",
+          data: {
+            labels: dates,
+            datasets: [
+              {
+                label: "Calories (kcal)",
+                data: calories,
+                borderColor: "#e74c3c",
+                backgroundColor: "rgba(231, 76, 60, 0.1)",
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 6,
+                pointBackgroundColor: "#e74c3c",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                display: true,
+                position: "top",
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: false,
+                title: {
+                  display: true,
+                  text: "Calories (kcal)",
+                },
+              },
+            },
+          },
+        });
+
+        // Chart 2: Weight Trend
+        const weightCtx = document
+          .getElementById("weightChart")
+          .getContext("2d");
+        new Chart(weightCtx, {
+          type: "line",
+          data: {
+            labels: dates,
+            datasets: [
+              {
+                label: "Weight (kg)",
+                data: weights,
+                borderColor: "#3498db",
+                backgroundColor: "rgba(52, 152, 219, 0.1)",
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 6,
+                pointBackgroundColor: "#3498db",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                display: true,
+                position: "top",
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: false,
+                title: {
+                  display: true,
+                  text: "Weight (kg)",
+                },
+              },
+            },
+          },
+        });
+
+        // Chart 3: Macronutrient Distribution (Average)
+        const avgProtein =
+          proteins.reduce((a, b) => a + b, 0) / proteins.length;
+        const avgFat = fats.reduce((a, b) => a + b, 0) / fats.length;
+        const avgCarbs = carbs.reduce((a, b) => a + b, 0) / carbs.length;
+
+        const macroCtx = document.getElementById("macroChart").getContext("2d");
+        new Chart(macroCtx, {
+          type: "doughnut",
+          data: {
+            labels: ["Protein", "Fat", "Carbs"],
+            datasets: [
+              {
+                data: [avgProtein, avgFat, avgCarbs],
+                backgroundColor: ["#3498db", "#f39c12", "#27ae60"],
+                borderWidth: 2,
+                borderColor: "#fff",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                display: true,
+                position: "bottom",
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    return (
+                      context.label + ": " + context.parsed.toFixed(1) + " g"
+                    );
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        // Chart 4: Daily Macronutrient Comparison
+        const macroComparisonCtx = document
+          .getElementById("macroComparisonChart")
+          .getContext("2d");
+        new Chart(macroComparisonCtx, {
+          type: "bar",
+          data: {
+            labels: dates,
+            datasets: [
+              {
+                label: "Protein (g)",
+                data: proteins,
+                backgroundColor: "#3498db",
+                borderColor: "#2980b9",
+                borderWidth: 1,
+              },
+              {
+                label: "Fat (g)",
+                data: fats,
+                backgroundColor: "#f39c12",
+                borderColor: "#e67e22",
+                borderWidth: 1,
+              },
+              {
+                label: "Carbs (g)",
+                data: carbs,
+                backgroundColor: "#27ae60",
+                borderColor: "#229954",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                display: true,
+                position: "top",
+              },
+            },
+            scales: {
+              x: {
+                stacked: false,
+              },
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: "Grams (g)",
+                },
+              },
+            },
+          },
+        });
+      }
+
+      // Handle image hover with rotation
+      function setupImageHover() {
+        document
+          .querySelectorAll(".image-wrapper img[data-rotate]")
+          .forEach((img) => {
+            const rotateDeg = img.getAttribute("data-rotate");
+            img.addEventListener("mouseenter", function () {
+              this.style.transform = `scale(1.05) rotate(${rotateDeg}deg)`;
+            });
+            img.addEventListener("mouseleave", function () {
+              this.style.transform = `rotate(${rotateDeg}deg)`;
+            });
+          });
+      }
+
+      // Load data when page loads
+      loadData().then(() => {
+        setupImageHover();
+      });
+    </script>
+  </body>
+</html>
