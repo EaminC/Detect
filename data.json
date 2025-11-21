@@ -1,0 +1,122 @@
+{
+  "days": [
+    {
+      "date": "11.20",
+      "displayDate": "Nov 20",
+      "weight": 130.6,
+      "images": [
+        {
+          "filename": "11.20-1.jpg",
+          "rotate": 0
+        },
+        {
+          "filename": "11.20-2.jpg",
+          "rotate": 0
+        }
+      ],
+      "meals": [
+        {
+          "name": "Trader Joe Caesar Salad",
+          "weight": "250 g",
+          "calories": 320,
+          "protein": 7,
+          "fat": 29,
+          "carbs": 22
+        },
+        {
+          "name": "Cherry Tomatoes",
+          "weight": "450 g",
+          "calories": 85,
+          "protein": 3,
+          "fat": 0,
+          "carbs": 20
+        },
+        {
+          "name": "Pan-fried Pork Chop",
+          "weight": "200 g",
+          "calories": 484,
+          "protein": 42,
+          "fat": 34,
+          "carbs": 0
+        },
+        {
+          "name": "Olive Oil",
+          "weight": "15 ml",
+          "calories": 120,
+          "protein": 0,
+          "fat": 14,
+          "carbs": 0
+        }
+      ],
+      "totals": {
+        "calories": 1009,
+        "protein": 52,
+        "fat": 77,
+        "carbs": 42
+      }
+    },
+    {
+      "date": "11.21",
+      "displayDate": "Nov 21",
+      "weight": 122.5,
+      "images": [
+        {
+          "filename": "11.21-1.jpg",
+          "rotate": 0
+        },
+        {
+          "filename": "11.21-2.jpg",
+          "rotate": 0
+        }
+      ],
+      "meals": [
+        {
+          "name": "Lettuce & Arugula Salad + Ranch",
+          "weight": "200 g",
+          "calories": 100,
+          "protein": 2,
+          "fat": 7,
+          "carbs": 7
+        },
+        {
+          "name": "Tomatoes & Blueberries",
+          "weight": "200 g",
+          "calories": 56,
+          "protein": 1.5,
+          "fat": 0.5,
+          "carbs": 13
+        },
+        {
+          "name": "Pan-fried Pork Chop",
+          "weight": "200 g",
+          "calories": 420,
+          "protein": 40,
+          "fat": 30,
+          "carbs": 0
+        },
+        {
+          "name": "Olive Oil Absorbed",
+          "weight": "10 g",
+          "calories": 90,
+          "protein": 0,
+          "fat": 10,
+          "carbs": 0
+        },
+        {
+          "name": "Eggs (2)",
+          "weight": "~100 g",
+          "calories": 144,
+          "protein": 12.6,
+          "fat": 9.6,
+          "carbs": 0.8
+        }
+      ],
+      "totals": {
+        "calories": 810,
+        "protein": 56.1,
+        "fat": 57.1,
+        "carbs": 20.8
+      }
+    }
+  ]
+}
