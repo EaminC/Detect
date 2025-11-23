@@ -184,6 +184,81 @@
         "fat": 63.5,
         "carbs": 38.7
       }
+    },
+    {
+      "date": "11.23",
+      "displayDate": "Nov 23",
+      "weight": 121.4,
+      "images": [
+        {
+          "filename": "11.23-1.jpg",
+          "rotate": 0
+        }
+      ],
+      "meals": [
+        {
+          "name": "A1 Steak Sauce",
+          "weight": "17 g",
+          "calories": 15,
+          "protein": 0,
+          "fat": 0,
+          "carbs": 3
+        },
+        {
+          "name": "Caesar Dressing",
+          "weight": "20 g",
+          "calories": 57,
+          "protein": 1.4,
+          "fat": 5,
+          "carbs": 0.7
+        },
+        {
+          "name": "Pan-fried Pork Loin",
+          "weight": "350 g",
+          "calories": 840,
+          "protein": 80.5,
+          "fat": 56,
+          "carbs": 0
+        },
+        {
+          "name": "Eggs (2)",
+          "weight": "~100 g",
+          "calories": 140,
+          "protein": 12,
+          "fat": 10,
+          "carbs": 1
+        },
+        {
+          "name": "Baby Corn",
+          "weight": "75 g",
+          "calories": 52,
+          "protein": 1.8,
+          "fat": 0.4,
+          "carbs": 10.6
+        },
+        {
+          "name": "Lettuce",
+          "weight": "115 g",
+          "calories": 20,
+          "protein": 1,
+          "fat": 0,
+          "carbs": 4
+        },
+        {
+          "name": "Cherry Tomatoes",
+          "weight": "454 g",
+          "calories": 85,
+          "protein": 3,
+          "fat": 0,
+          "carbs": 20
+        }
+      ],
+      "totals": {
+        "calories": 1209,
+        "protein": 100,
+        "fat": 71,
+        "carbs": 39
+      }
     }
   ]
 }
