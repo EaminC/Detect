@@ -259,6 +259,73 @@
         "fat": 71,
         "carbs": 39
       }
+    },
+    {
+      "date": "11.24",
+      "displayDate": "Nov 24",
+      "weight": 120.9,
+      "images": [
+        {
+          "filename": "11.24-1.jpg",
+          "rotate": 0
+        }
+      ],
+      "meals": [
+        {
+          "name": "Chicken Breakfast Sausage",
+          "weight": "170 g",
+          "calories": 209,
+          "protein": 33,
+          "fat": 6,
+          "carbs": 3
+        },
+        {
+          "name": "Lettuce",
+          "weight": "110 g",
+          "calories": 17,
+          "protein": 1,
+          "fat": 0,
+          "carbs": 3
+        },
+        {
+          "name": "Pan-fried Eggs (2)",
+          "weight": "~100 g",
+          "calories": 180,
+          "protein": 12,
+          "fat": 19,
+          "carbs": 1
+        },
+        {
+          "name": "Cherry Tomatoes",
+          "weight": "908 g",
+          "calories": 163,
+          "protein": 9,
+          "fat": 0,
+          "carbs": 32
+        },
+        {
+          "name": "Caesar Dressing",
+          "weight": "20 g",
+          "calories": 57,
+          "protein": 2,
+          "fat": 7,
+          "carbs": 1
+        },
+        {
+          "name": "Olive Oil Absorbed",
+          "weight": "8 g",
+          "calories": 72,
+          "protein": 0,
+          "fat": 8,
+          "carbs": 0
+        }
+      ],
+      "totals": {
+        "calories": 698,
+        "protein": 57,
+        "fat": 40,
+        "carbs": 40
+      }
     }
   ]
 }
