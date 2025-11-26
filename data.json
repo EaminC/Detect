@@ -326,6 +326,49 @@
         "fat": 40,
         "carbs": 40
       }
+    },
+    {
+      "date": "11.25",
+      "displayDate": "Nov 25",
+      "weight": 120.5,
+      "images": [
+        {
+          "filename": "11.25-1.jpg",
+          "rotate": 0
+        }
+      ],
+      "meals": [
+        {
+          "name": "Cherry Tomatoes",
+          "weight": "600 g",
+          "calories": 108,
+          "protein": 5.4,
+          "fat": 1.2,
+          "carbs": 23.4
+        },
+        {
+          "name": "Pork Ribs",
+          "weight": "635 g",
+          "calories": 1418,
+          "protein": 125,
+          "fat": 102,
+          "carbs": 0
+        },
+        {
+          "name": "White Radish",
+          "weight": "200 g",
+          "calories": 32,
+          "protein": 0.6,
+          "fat": 0.1,
+          "carbs": 6.8
+        }
+      ],
+      "totals": {
+        "calories": 1558,
+        "protein": 131,
+        "fat": 103.3,
+        "carbs": 30.2
+      }
     }
   ]
 }
