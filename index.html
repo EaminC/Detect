@@ -571,6 +571,7 @@
         });
 
         // Chart 2: Weight Trend
+        const avgWeight = weights.reduce((a, b) => a + b, 0) / weights.length;
         const weightCtx = document
           .getElementById("weightChart")
           .getContext("2d");
@@ -605,7 +606,8 @@
             },
             scales: {
               y: {
-                beginAtZero: true,
+                beginAtZero: false,
+                min: Math.max(0, avgWeight - 10),
                 title: {
                   display: true,
                   text: "Weight (kg)",
