@@ -48,6 +48,74 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
 
+      .chart-scroll-wrapper {
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+        position: relative;
+      }
+
+      .chart-scroll-wrapper canvas {
+        min-width: 600px;
+      }
+
+      .macro-trend-section {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 2px solid #e8e8e8;
+      }
+
+      .trend-chart-wrapper {
+        width: 100%;
+        height: 300px;
+        position: relative;
+      }
+
+      .trend-btn {
+        padding: 10px 20px;
+        border: 2px solid #3498db;
+        background: white;
+        color: #3498db;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.95em;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .trend-btn:hover {
+        background: #3498db;
+        color: white;
+      }
+
+      .trend-btn.active {
+        background: #3498db;
+        color: white;
+      }
+
+      .trend-btn[data-macro="fat"] {
+        border-color: #f39c12;
+        color: #f39c12;
+      }
+
+      .trend-btn[data-macro="fat"]:hover,
+      .trend-btn[data-macro="fat"].active {
+        background: #f39c12;
+        color: white;
+      }
+
+      .trend-btn[data-macro="carbs"] {
+        border-color: #27ae60;
+        color: #27ae60;
+      }
+
+      .trend-btn[data-macro="carbs"]:hover,
+      .trend-btn[data-macro="carbs"].active {
+        background: #27ae60;
+        color: white;
+      }
+
+
       .chart-title {
         font-size: 1.3em;
         font-weight: 600;
@@ -276,7 +344,14 @@
 
         <div class="chart-container">
           <div class="chart-title">Daily Macronutrient Comparison</div>
-          <canvas id="macroComparisonChart"></canvas>
+          <div class="chart-scroll-wrapper">
+            <canvas id="macroComparisonChart"></canvas>
+          </div>
+          <div class="macro-trend-section">
+            <div class="trend-chart-wrapper">
+              <canvas id="macroTrendChart"></canvas>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -485,7 +560,7 @@
             },
             scales: {
               y: {
-                beginAtZero: false,
+                beginAtZero: true,
                 title: {
                   display: true,
                   text: "Calories (kcal)",
@@ -581,11 +656,11 @@
           },
         });
 
-        // Chart 4: Daily Macronutrient Comparison
+        // Chart 4: Daily Macronutrient Comparison (Bar Chart)
         const macroComparisonCtx = document
           .getElementById("macroComparisonChart")
           .getContext("2d");
-        new Chart(macroComparisonCtx, {
+        let macroComparisonChart = new Chart(macroComparisonCtx, {
           type: "bar",
           data: {
             labels: dates,
@@ -615,7 +690,7 @@
           },
           options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
               legend: {
                 display: true,
@@ -626,6 +701,77 @@
               x: {
                 stacked: false,
               },
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: "Grams (g)",
+                },
+              },
+            },
+          },
+        });
+
+        // Chart 5: Macro Trend (Line Chart - All three macros together)
+        const macroTrendCtx = document
+          .getElementById("macroTrendChart")
+          .getContext("2d");
+        new Chart(macroTrendCtx, {
+          type: "line",
+          data: {
+            labels: dates,
+            datasets: [
+              {
+                label: "Protein (g)",
+                data: proteins,
+                borderColor: "#3498db",
+                backgroundColor: "rgba(52, 152, 219, 0.1)",
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 6,
+                pointBackgroundColor: "#3498db",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+              },
+              {
+                label: "Fat (g)",
+                data: fats,
+                borderColor: "#f39c12",
+                backgroundColor: "rgba(243, 156, 18, 0.1)",
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 6,
+                pointBackgroundColor: "#f39c12",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+              },
+              {
+                label: "Carbs (g)",
+                data: carbs,
+                borderColor: "#27ae60",
+                backgroundColor: "rgba(39, 174, 96, 0.1)",
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointRadius: 6,
+                pointBackgroundColor: "#27ae60",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: {
+                display: true,
+                position: "top",
+              },
+            },
+            scales: {
               y: {
                 beginAtZero: true,
                 title: {
