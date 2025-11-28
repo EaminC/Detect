@@ -469,19 +469,19 @@
           "carbs": 1.1
         },
         {
-          "name": "荠菜鲜肉馄饨",
-          "weight": "500 g",
-          "calories": 1100,
-          "protein": 50,
-          "fat": 50,
-          "carbs": 125
+          "name": "Shepherd's-Purse & Pork Wontons",
+          "weight": "20 pieces (≈400 g)",
+          "calories": 744,
+          "protein": 41.7,
+          "fat": 26.8,
+          "carbs": 30.0
         }
       ],
       "totals": {
-        "calories": 1731,
-        "protein": 100.95,
-        "fat": 84.95,
-        "carbs": 153.05
+        "calories": 1375,
+        "protein": 92.65,
+        "fat": 61.75,
+        "carbs": 58.05
       }
     }
   ]
