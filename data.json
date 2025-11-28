@@ -420,6 +420,57 @@
         "fat": 34.95,
         "carbs": 28.05
       }
+    },
+    {
+      "date": "11.27",
+      "displayDate": "Nov 27",
+      "weight": 120.7,
+      "images": [
+        {
+          "filename": "11.27-1.jpg",
+          "rotate": 0
+        }
+      ],
+      "meals": [
+        {
+          "name": "Tomatoes",
+          "weight": "283 g",
+          "calories": 51,
+          "protein": 2.5,
+          "fat": 0.3,
+          "carbs": 11
+        },
+        {
+          "name": "Mushroom Meatballs",
+          "weight": "283 g",
+          "calories": 429,
+          "protein": 35.35,
+          "fat": 25.25,
+          "carbs": 15.15
+        },
+        {
+          "name": "Eggs (2)",
+          "weight": "~100 g",
+          "calories": 144,
+          "protein": 12.6,
+          "fat": 9.6,
+          "carbs": 0.8
+        },
+        {
+          "name": "Bok Choy",
+          "weight": "50 g",
+          "calories": 7,
+          "protein": 0.5,
+          "fat": 0.1,
+          "carbs": 1.1
+        }
+      ],
+      "totals": {
+        "calories": 631,
+        "protein": 50.95,
+        "fat": 34.95,
+        "carbs": 28.05
+      }
     }
   ]
 }
