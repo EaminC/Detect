@@ -437,28 +437,12 @@
       ],
       "meals": [
         {
-          "name": "Tomatoes",
-          "weight": "283 g",
-          "calories": 51,
-          "protein": 2.5,
-          "fat": 0.3,
-          "carbs": 11
-        },
-        {
           "name": "Mushroom Meatballs",
           "weight": "283 g",
           "calories": 429,
           "protein": 35.35,
           "fat": 25.25,
           "carbs": 15.15
-        },
-        {
-          "name": "Eggs (2)",
-          "weight": "~100 g",
-          "calories": 144,
-          "protein": 12.6,
-          "fat": 9.6,
-          "carbs": 0.8
         },
         {
           "name": "Bok Choy",
@@ -478,10 +462,10 @@
         }
       ],
       "totals": {
-        "calories": 1375,
-        "protein": 92.65,
-        "fat": 61.75,
-        "carbs": 58.05
+        "calories": 1180,
+        "protein": 77.55,
+        "fat": 52.15,
+        "carbs": 46.25
       }
     }
   ]
