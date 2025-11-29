@@ -467,6 +467,68 @@
         "fat": 52.15,
         "carbs": 46.25
       }
+    },
+    {
+      "date": "11.28",
+      "displayDate": "Nov 28",
+      "weight": 121.5,
+      "images": [],
+      "meals": [
+        {
+          "name": "Cherry Tomatoes",
+          "weight": "907 g",
+          "calories": 163,
+          "protein": 8.2,
+          "fat": 0.9,
+          "carbs": 16.4
+        },
+        {
+          "name": "Lettuce",
+          "weight": "100 g",
+          "calories": 15,
+          "protein": 1,
+          "fat": 0.2,
+          "carbs": 2
+        },
+        {
+          "name": "Salad Dressing",
+          "weight": "30 ml",
+          "calories": 67,
+          "protein": 0,
+          "fat": 7,
+          "carbs": 1
+        },
+        {
+          "name": "Cod (pan-fried)",
+          "weight": "100 g",
+          "calories": 95,
+          "protein": 22,
+          "fat": 1,
+          "carbs": 0
+        },
+        {
+          "name": "Skinless Chicken Thigh (pan-fried)",
+          "weight": "70 g",
+          "calories": 129,
+          "protein": 14,
+          "fat": 8.3,
+          "carbs": 0
+        },
+        {
+          "name": "Fried Eggs (2)",
+          "weight": "~100 g",
+          "calories": 180,
+          "protein": 12.6,
+          "fat": 14,
+          "carbs": 1
+        }
+      ],
+      "totals": {
+        "calories": 649,
+        "protein": 59.8,
+        "fat": 31.4,
+        "carbs": 20.4
+      }
     }
   ]
 }
