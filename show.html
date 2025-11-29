@@ -115,7 +115,6 @@
         color: white;
       }
 
-
       .chart-title {
         font-size: 1.3em;
         font-weight: 600;
@@ -293,6 +292,105 @@
         font-size: 1.2em;
       }
 
+      .ai-analysis-section {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+      }
+
+      .ai-analysis-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .ai-analysis-title {
+        font-size: 1.2em;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .ai-analysis-subtitle {
+        font-size: 0.9em;
+        color: #7f8c8d;
+        margin-top: 4px;
+      }
+
+      .ai-toggle-btn {
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid #3498db;
+        background: #ffffff;
+        color: #3498db;
+        font-size: 0.85em;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+      }
+
+      .ai-toggle-btn:hover {
+        background: #3498db;
+        color: #ffffff;
+      }
+
+      .ai-toggle-btn.active {
+        background: #3498db;
+        color: #ffffff;
+      }
+
+      .ai-chat-container {
+        margin-top: 12px;
+        border-radius: 10px;
+        background: #f8fafc;
+        border: 1px solid #e1e8f0;
+        max-height: 260px;
+        overflow: hidden;
+        display: none;
+      }
+
+      .ai-chat-inner {
+        padding: 14px 16px;
+        max-height: 260px;
+        overflow-y: auto;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Mono",
+          Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.88em;
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
+
+      .ai-line {
+        opacity: 0;
+        transform: translateY(2px);
+        animation: aiLineIn 0.18s ease forwards;
+      }
+
+      .ai-line + .ai-line {
+        margin-top: 2px;
+      }
+
+      .ai-meta {
+        font-size: 0.8em;
+        color: #95a5a6;
+        margin-bottom: 6px;
+      }
+
+      @keyframes aiLineIn {
+        from {
+          opacity: 0;
+          transform: translateY(2px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
       @media (max-width: 768px) {
         h1 {
           font-size: 2em;
@@ -355,6 +453,26 @@
         </div>
       </div>
 
+      <!-- AI analysis -->
+      <div class="ai-analysis-section" id="aiAnalysisSection">
+        <div class="ai-analysis-header">
+          <div>
+            <div class="ai-analysis-title">Weekly AI Nutrition Summary</div>
+            <div class="ai-analysis-subtitle">
+              Click to see an AI-style weekly review of your diet.
+            </div>
+          </div>
+          <button id="aiToggleBtn" class="ai-toggle-btn">Show AI Review</button>
+        </div>
+        <div class="ai-chat-container" id="aiChatContainer">
+          <div class="ai-chat-inner" id="aiChatContent">
+            <div class="ai-meta">
+              AI assistant: waiting to load the summary…
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Day entries will be inserted here -->
       <div id="dayEntries"></div>
     </div>
@@ -362,6 +480,11 @@
     <script>
       let data = null;
       const imageFolder = "pic/";
+      let aiLoaded = false;
+      let aiPlaying = false;
+      let aiLines = [];
+      let aiLineIndex = 0;
+      let aiTimer = null;
 
       // Load data from JSON file
       async function loadData() {
@@ -408,6 +531,9 @@
         loadingEl.style.display = "none";
         chartsSection.style.display = "grid";
 
+        // Setup AI analysis toggle
+        setupAIAnalysis();
+
         // Render day entries
         dayEntriesEl.innerHTML = data.days
           .map((day) => createDayEntry(day))
@@ -415,6 +541,81 @@
 
         // Initialize charts
         initializeCharts();
+      }
+
+      // Setup AI analysis panel
+      function setupAIAnalysis() {
+        const toggleBtn = document.getElementById("aiToggleBtn");
+        const chatContainer = document.getElementById("aiChatContainer");
+
+        if (!toggleBtn || !chatContainer) return;
+
+        toggleBtn.addEventListener("click", async () => {
+          const isOpen = chatContainer.style.display === "block";
+
+          if (isOpen) {
+            chatContainer.style.display = "none";
+            toggleBtn.classList.remove("active");
+            toggleBtn.textContent = "Show AI Review";
+            if (aiTimer) {
+              clearInterval(aiTimer);
+              aiTimer = null;
+            }
+            aiPlaying = false;
+            return;
+          }
+
+          chatContainer.style.display = "block";
+          toggleBtn.classList.add("active");
+          toggleBtn.textContent = "Hide AI Review";
+
+          if (!aiLoaded) {
+            await loadAIAnalysis();
+          }
+        });
+      }
+
+      // Load AI analysis text and simulate streaming output
+      async function loadAIAnalysis() {
+        const chatContent = document.getElementById("aiChatContent");
+        if (!chatContent) return;
+
+        chatContent.innerHTML =
+          '<div class="ai-meta">AI assistant: loading weekly analysis…</div>';
+
+        try {
+          const res = await fetch("AI_analysis.txt");
+          if (!res.ok) {
+            throw new Error("HTTP " + res.status);
+          }
+          const text = await res.text();
+          aiLines = text.split(/\r?\n/);
+          aiLineIndex = 0;
+          aiLoaded = true;
+          aiPlaying = true;
+
+          chatContent.innerHTML =
+            '<div class="ai-meta">AI assistant: here is the latest weekly analysis:</div>';
+
+          aiTimer = setInterval(() => {
+            if (aiLineIndex >= aiLines.length) {
+              clearInterval(aiTimer);
+              aiTimer = null;
+              aiPlaying = false;
+              return;
+            }
+            const line = aiLines[aiLineIndex++];
+            const div = document.createElement("div");
+            div.className = "ai-line";
+            div.textContent = line;
+            chatContent.appendChild(div);
+            chatContent.scrollTop = chatContent.scrollHeight;
+          }, 60);
+        } catch (err) {
+          console.error("Error loading AI_analysis.txt:", err);
+          chatContent.innerHTML =
+            '<div class="ai-meta" style="color:#e74c3c;">Unable to load analysis text. Please check the configuration.</div>';
+        }
       }
 
       // Create HTML for a day entry
