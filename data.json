@@ -529,6 +529,65 @@
         "fat": 31.4,
         "carbs": 20.4
       }
+    },
+    {
+      "date": "11.29",
+      "displayDate": "Nov 29",
+      "weight": 120.7,
+      "images": [
+        {
+          "filename": "11.29-1.jpg",
+          "rotate": 0
+        }
+      ],
+      "meals": [
+        {
+          "name": "Shrimp",
+          "weight": "204 g",
+          "calories": 144,
+          "protein": 31.2,
+          "fat": 2.4,
+          "carbs": 0
+        },
+        {
+          "name": "Lettuce",
+          "weight": "100 g",
+          "calories": 15,
+          "protein": 1,
+          "fat": 0.2,
+          "carbs": 2
+        },
+        {
+          "name": "Cherry Tomatoes",
+          "weight": "100 g",
+          "calories": 18,
+          "protein": 1,
+          "fat": 0.1,
+          "carbs": 4
+        },
+        {
+          "name": "Fried Eggs (2)",
+          "weight": "~100 g",
+          "calories": 180,
+          "protein": 12.6,
+          "fat": 14,
+          "carbs": 1
+        },
+        {
+          "name": "Salad Dressing",
+          "weight": "30 ml",
+          "calories": 67,
+          "protein": 0,
+          "fat": 7,
+          "carbs": 1
+        }
+      ],
+      "totals": {
+        "calories": 424,
+        "protein": 45.8,
+        "fat": 23.7,
+        "carbs": 8
+      }
     }
   ]
 }

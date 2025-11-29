@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daily Food & Weight Tracker</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
       * {
         margin: 0;
@@ -361,7 +362,6 @@
           Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         font-size: 0.88em;
         line-height: 1.6;
-        white-space: pre-wrap;
       }
 
       .ai-line {
@@ -575,46 +575,54 @@
         });
       }
 
-      // Load AI analysis text and simulate streaming output
+      // Load AI analysis text (Markdown) and simulate streaming output
       async function loadAIAnalysis() {
         const chatContent = document.getElementById("aiChatContent");
         if (!chatContent) return;
 
         chatContent.innerHTML =
-          '<div class="ai-meta">AI assistant: loading weekly analysis…</div>';
+          '<div class="ai-meta">AI assistant: loading weekly analysis (Markdown)…</div>';
 
         try {
-          const res = await fetch("AI_analysis.txt");
+          const res = await fetch("AI_analysis.md");
           if (!res.ok) {
             throw new Error("HTTP " + res.status);
           }
           const text = await res.text();
-          aiLines = text.split(/\r?\n/);
-          aiLineIndex = 0;
           aiLoaded = true;
           aiPlaying = true;
 
           chatContent.innerHTML =
             '<div class="ai-meta">AI assistant: here is the latest weekly analysis:</div>';
 
+          const contentDiv = document.createElement("div");
+          chatContent.appendChild(contentDiv);
+
+          const intervalMs = 0.08; // faster per-character animation
+          let charIndex = 0;
+
           aiTimer = setInterval(() => {
-            if (aiLineIndex >= aiLines.length) {
+            if (charIndex >= text.length) {
               clearInterval(aiTimer);
               aiTimer = null;
               aiPlaying = false;
               return;
             }
-            const line = aiLines[aiLineIndex++];
-            const div = document.createElement("div");
-            div.className = "ai-line";
-            div.textContent = line;
-            chatContent.appendChild(div);
+
+            const visibleText = text.slice(0, charIndex + 1);
+            if (window.marked) {
+              contentDiv.innerHTML = marked.parse(visibleText || " ");
+            } else {
+              contentDiv.textContent = visibleText;
+            }
+
+            charIndex++;
             chatContent.scrollTop = chatContent.scrollHeight;
-          }, 60);
+          }, intervalMs);
         } catch (err) {
-          console.error("Error loading AI_analysis.txt:", err);
+          console.error("Error loading AI_analysis.md:", err);
           chatContent.innerHTML =
-            '<div class="ai-meta" style="color:#e74c3c;">Unable to load analysis text. Please check the configuration.</div>';
+            '<div class="ai-meta" style="color:#e74c3c;">Unable to load analysis markdown. Please check that AI_analysis.md exists next to this page.</div>';
         }
       }
 
